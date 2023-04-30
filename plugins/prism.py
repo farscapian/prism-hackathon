@@ -13,10 +13,10 @@ def init(options, configuration, plugin, **kwargs):
 def prism(plugin, label, members):
     try:
         plugin.log('inside prism')
-        plugin.log(label, members)
+        #plugin.log(label, members)
         lrpc =  LightningRpc("/root/.lightning/regtest/lightning-rpc")
         offer = lrpc.offer("any", "label")
-        lrpc.datastore(offer["bolt12"], json.dumps({label, members}))
+        lrpc.datastore(key=[offer["bolt12"]], json.dumps({label, members}))
         return offer
     except RpcError as e:
         plugin.log(e)
@@ -39,7 +39,8 @@ def on_payment(plugin, invoice_payment, **kwargs):
     plugin.log("Received invoice_payment event for label {label}, preimage {preimage},"
                " and amount of {msat}".format(**invoice_payment))
     plugin.log(invoice_payment)
-    # we will check if bolt12 lookup in 
+    # we will check if bolt12 we stored earlier in the prism call is in the label of the bolt11 invoice
+    # at that point keysend pubkeys in the members. 
     return invoice_payment
 
 plugin.run() # Run our plugin
