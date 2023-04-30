@@ -29,6 +29,7 @@ lightningd
   --rest-port=8080
   --rest-protocol=http
   --plugin=/plugins/prism.py
+  --experimental-offers
 ```
 
 Great! Now that you have a custom implementation configured, you can create your polar dev environment as usual, just be sure to select the new image that contains all the prism functionality :)
