@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-import time
-from pyln.client import Millisatoshi, Plugin, RpcError
-plugin = Plugin() # This is our plugin's handle
- 
+import json
+from pyln.client import  Plugin, RpcError, LightningRpc
+plugin = Plugin()
+
 @plugin.init() # Decorator to define a callback once the `init` method call has successfully completed
 def init(options, configuration, plugin, **kwargs):
     plugin.log("Plugin prism.py initialized")
@@ -10,15 +10,17 @@ def init(options, configuration, plugin, **kwargs):
 
 #  destination, amount, request
 @plugin.method("prism")
-def prism(plugin, name="world"):
+def prism(plugin, label, members):
     try:
-        print('inside createPrism')
-        destination = plugin.get_option('destination')
-        s = '{}'.format(destination)
-        plugin.log(s)
-        return s
+        plugin.log('inside prism')
+        plugin.log(label, members)
+        lrpc =  LightningRpc("/root/.lightning/regtest/lightning-rpc")
+        offer = lrpc.offer("any", "label")
+        lrpc.datastore(offer["bolt12"], json.dumps({label, members}))
+        return offer
     except RpcError as e:
-        print(e)
+        plugin.log(e)
+        return e
 
 plugin.add_option('destination', 'destination', 'default_destination')
 
@@ -32,10 +34,12 @@ def on_connect(plugin, id, address, **kwargs):
 def on_disconnect(plugin, id, **kwargs):
     plugin.log("Received disconnect event for peer {}".format(id))
 
-@plugin.hook("htlc_accepted")
-def on_htlc_accepted(onion, htlc, plugin, **kwargs):
-    plugin.log('on_htlc_accepted called')
-    time.sleep(20)
-    return {'result': 'continue'}
+@plugin.subscribe("invoice_payment")
+def on_payment(plugin, invoice_payment, **kwargs):
+    plugin.log("Received invoice_payment event for label {label}, preimage {preimage},"
+               " and amount of {msat}".format(**invoice_payment))
+    plugin.log(invoice_payment)
+    # we will check if bolt12 lookup in 
+    return invoice_payment
 
 plugin.run() # Run our plugin
