@@ -27,38 +27,6 @@ services:
       - '19444:18444'
       - '28334:28334'
       - '29335:28335'
-  alice:
-    image: roygbiv/clightning:23.02.2
-    container_name: polar-n1-alice
-    environment:
-      USERID: ${USERID:-1000}
-      GROUPID: ${GROUPID:-1000}
-    hostname: alice
-    command: >-
-      sh -c "chown 1000:1000 /opt/c-lightning-rest/certs && lightningd --alias=alice --addr=alice --addr=0.0.0.0:9735
-      --network=regtest --bitcoin-rpcuser=polaruser
-      --bitcoin-rpcpassword=polarpass --bitcoin-rpcconnect=polar-n1-backend1
-      --bitcoin-rpcport=18443 --log-level=debug --dev-bitcoind-poll=2
-      --dev-fast-gossip --grpc-port=11001
-      --plugin=/plugins/prism.py --experimental-offers
-      --experimental-websocket-port=7272
-      --rest-port=8080
-      --rest-protocol=http
-      --plugin=/opt/c-lightning-rest/plugin.js"
-    restart: always
-    volumes:
-      - ./volumes/c-lightning/alice/lightningd:/home/clightning/.lightning
-      - ./volumes/c-lightning/alice/rest-api:/opt/c-lightning-rest/certs:rw
-    expose:
-      - '8080'
-      - '11001'
-      - '9735'
-      - '7272'
-    ports:
-      - '8181:8080'
-      - '11001:11001'
-      - '9835:9735'
-      - '7272:7272'
   bob:
     image: roygbiv/clightning:23.02.2
     container_name: polar-n1-bob
@@ -81,6 +49,38 @@ services:
     volumes:
       - ./volumes/c-lightning/bob/lightningd:/home/clightning/.lightning
       - ./volumes/c-lightning/bob/rest-api:/opt/c-lightning-rest/certs
+    expose:
+      - '8080'
+      - '11001'
+      - '9735'
+      - '7272'
+    ports:
+      - '8181:8080'
+      - '11001:11001'
+      - '9835:9735'
+      - '7272:7272'
+  alice:
+    image: roygbiv/clightning:23.02.2
+    container_name: polar-n1-alice
+    environment:
+      USERID: ${USERID:-1000}
+      GROUPID: ${GROUPID:-1000}
+    hostname: alice
+    command: >-
+      sh -c "chown 1000:1000 /opt/c-lightning-rest/certs && lightningd --alias=alice --addr=alice --addr=0.0.0.0:9735
+      --network=regtest --bitcoin-rpcuser=polaruser
+      --bitcoin-rpcpassword=polarpass --bitcoin-rpcconnect=polar-n1-backend1
+      --bitcoin-rpcport=18443 --log-level=debug --dev-bitcoind-poll=2
+      --dev-fast-gossip --grpc-port=11001
+      --plugin=/plugins/prism.py --experimental-offers
+      --experimental-websocket-port=7272
+      --rest-port=8080
+      --rest-protocol=http
+      --plugin=/opt/c-lightning-rest/plugin.js"
+    restart: always
+    volumes:
+      - ./volumes/c-lightning/alice/lightningd:/home/clightning/.lightning
+      - ./volumes/c-lightning/alice/rest-api:/opt/c-lightning-rest/certs:rw
     expose:
       - '8080'
       - '11001'
@@ -123,3 +123,35 @@ services:
       - '11003:11001'
       - '9837:9735'
       - '7274:7272'
+  dave:
+    image: roygbiv/clightning:23.02.2
+    container_name: polar-n1-dave
+    environment:
+      USERID: ${USERID:-1000}
+      GROUPID: ${GROUPID:-1000}
+    hostname: carol
+    command: >-
+      sh -c "chown 1000:1000 /opt/c-lightning-rest/certs && lightningd --alias=dave --addr=dave --addr=0.0.0.0:9735
+      --network=regtest --bitcoin-rpcuser=polaruser
+      --bitcoin-rpcpassword=polarpass --bitcoin-rpcconnect=polar-n1-backend1
+      --bitcoin-rpcport=18443 --log-level=debug --dev-bitcoind-poll=2
+      --dev-fast-gossip --grpc-port=11001
+      --plugin=/plugins/prism.py --experimental-offers
+      --experimental-websocket-port=7272
+      --rest-port=8080
+      --rest-protocol=http
+      --plugin=/opt/c-lightning-rest/plugin.js"
+    restart: always
+    volumes:
+      - ./volumes/c-lightning/carol/lightningd:/home/clightning/.lightning
+      - ./volumes/c-lightning/carol/rest-api:/opt/c-lightning-rest/certs
+    expose:
+      - '8080'
+      - '11001'
+      - '9735'
+      - '7272'
+    ports:
+      - '8184:8080'
+      - '11004:11001'
+      - '9838:9735'
+      - '7275:7272'
