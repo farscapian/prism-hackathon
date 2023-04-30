@@ -49,3 +49,20 @@ docker exec -it polar-n1-alice lightning-cli --network regtest listfunds
 
 docker exec -it polar-n1-alice lightning-cli --network regtest fundchannel 0399d4cb9e58e0129b70b5ed78628cacd7a47c06be867ee3c4688636f8eed92b2f 25000
 
+
+docker exec -it polar-n1-alice lightning-cli --network regtest prism
+
+
+
+
+
+
+# NOTES
+lightning-cli prism createPrism 
+
+lightning-cli offer any "description"
+
+
+alias lighting-cli="lightning-cli --network regtest $@"
+
+bcrt1qn632fxztu5ujnd7cnm32cdg4nz7gyhj6aqxrxh
