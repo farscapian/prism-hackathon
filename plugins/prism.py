@@ -7,13 +7,22 @@ plugin = Plugin() # This is our plugin's handle
 def init(options, configuration, plugin, **kwargs):
     plugin.log("Plugin prism.py initialized")
 
+
+#  destination, amount, request
 @plugin.method("prism")
-def createPrism(destination, amount, request, plugin):
+def prism(plugin, name="world"):
     try:
-        print('hello')
+        print('inside createPrism')
+        destination = plugin.get_option('destination')
+        s = '{}'.format(destination)
+        plugin.log(s)
+        return s
     except RpcError as e:
         print(e)
-  
+
+plugin.add_option('destination', 'destination', 'default_destination')
+
+
 @plugin.subscribe("connect")
 def on_connect(plugin, id, address, **kwargs):
     plugin.log("Received connect event for peer {}".format(id))
