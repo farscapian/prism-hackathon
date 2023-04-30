@@ -4,6 +4,10 @@ set -x
 
 docker system prune -f
 
+if ! docker image list | grep -q "roygbiv/clightning"; then
+    ./build.sh
+fi
+
 docker-compose up -d
 
 sleep 20
