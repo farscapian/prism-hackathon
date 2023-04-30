@@ -20,7 +20,7 @@ DAVE_PUBKEY=$(docker exec -it polar-n1-dave lightning-cli --network regtest geti
 # now open P2P connections
 ## from bob to alice
 BOB_ALICE_PEERID=$(docker exec -it polar-n1-bob lightning-cli --network regtest connect "$ALICE_PUBKEY" alice 9735 | jq -r '.id')
-sleep 1
+sleep 2
 ## from alice to carol
 ALICE_CAROL_PEERID=$(docker exec -it polar-n1-alice lightning-cli --network regtest connect "$CAROL_PUBKEY" carol 9735 | jq -r '.id')
 sleep 1
