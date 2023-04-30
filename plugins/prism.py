@@ -16,7 +16,8 @@ def prism(plugin, label, members):
         #plugin.log(label, members)
         lrpc =  LightningRpc("/root/.lightning/regtest/lightning-rpc")
         offer = lrpc.offer("any", "label")
-        lrpc.datastore(key=[offer["bolt12"]], json.dumps({label, members}))
+        lrpc.datastore(offer["bolt12"],
+                       string=json.dumps({"label":label, "members":members}))
         return offer
     except RpcError as e:
         plugin.log(e)
