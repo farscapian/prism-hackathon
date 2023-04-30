@@ -28,5 +28,3 @@ echo "$ADDR"
 CMD="docker exec -it -u 1000:1000 polar-n1-backend1 bitcoin-cli -regtest generatetoaddress 101 $ADDR"
 echo "Please run the following command manually. Afterwards, run resume.sh:  "
 echo "$CMD"
-
-

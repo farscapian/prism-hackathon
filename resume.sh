@@ -44,4 +44,7 @@ sleep 3
 docker exec -it polar-n1-alice lightning-cli --network regtest fundchannel "$ALICE_DAVE_PEERID" 250000
 docker exec -it -u 1000:1000 -it polar-n1-backend1 bitcoin-cli -regtest -generate 5
 
-echo 
+# Get node pubkeys
+echo "ALICE_PUBKEY: $ALICE_PUBKEY"
+echo "CAROL_PUBKEY: $CAROL_PUBKEY"
+echo "DAVE_PUBKEY: $DAVE_PUBKEY"
